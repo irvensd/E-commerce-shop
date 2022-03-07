@@ -1,37 +1,36 @@
-'use strict';
+// import models
+const Product = require('./Product');
+const Category = require('./Category');
+const Tag = require('./Tag');
+const ProductTag = require('./ProductTag');
 
-const fs = require('fs');
-const path = require('path');
-const Sequelize = require('sequelize');
-const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
-const db = {};
-
-let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
-
-fs
-  .readdirSync(__dirname)
-  .filter(file => {
-    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
-  })
-  .forEach(file => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;
-  });
-
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
+// Products belongsTo Category
+Product.belongsTo(Category, {
+    foreignKey: 'category_id'
 });
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+// Categories have many Products
+Category.hasMany(Product, {
+    foreignKey: 'category_id'
+});
 
-module.exports = db;
+// Products belongToMany Tags (through ProductTag)
+Product.belongsToMany(Tag, {
+    through: ProductTag,
+    as: 'Tags',
+    foreignKey: 'product_id'
+});
+
+// Tags belongToMany Products (through ProductTag)
+Tag.belongsToMany(Product, {
+    through: ProductTag,
+    as: 'Products',
+    foreignKey: 'tag_id'
+});
+
+module.exports = {
+  Product,
+  Category,
+  Tag,
+  ProductTag,
+};
