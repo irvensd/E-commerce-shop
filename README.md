@@ -23,7 +23,7 @@ THEN I am able to successfully create, update, and delete data in my database
 
 
 ## Screenshot
-https://drive.google.com/file/d/1lO6rtRcsjHLQs-o0Dz6NRbBehHYPgz4V/view
+https://drive.google.com/file/d/1bIZAm92cTbNcNeU0z5yJ8d7iTN8xuaTo/view
 
 
 ## Contributor 
